@@ -46,7 +46,7 @@
   var BIRD_COLORS = ['123,59,173', '44,151,175', LAVENDER, WHITE, GOLD];
 
   // ---- timeline (ms) ----
-  var PHX_MS = 2300;                    // phoenix holds
+  var PHX_MS = 3200;                    // phoenix forms and holds
   var WORD_SPACING = 1500;              // a new pair every 1.5s
   var WORD_LIFE = 2100;                 // each word: fade in, hold, get drawn in
   var PAIRS = Math.ceil(WORDS.length / 2);
@@ -314,9 +314,14 @@
         p.x += dx * pull + (-dy / dist) * swirl * dist;
         p.y += dy * pull + (dx / dist) * swirl * dist;
       } else if (p.tx !== null) {
-        var k = mode === 'phoenix' ? 0.085 : 0.06;
-        p.x += (p.tx - p.x) * k * dt;
-        p.y += (p.ty - p.y) * k * dt;
+        var k = mode === 'phoenix' ? 0.17 : 0.06;
+        var ddx = p.tx - p.x, ddy = p.ty - p.y;
+        if (mode === 'phoenix' && ddx * ddx + ddy * ddy < 4) {
+          p.x = p.tx; p.y = p.ty;        // snap home so the bird reads crisply
+        } else {
+          p.x += ddx * k * dt;
+          p.y += ddy * k * dt;
+        }
       } else {
         var mdx = mouse.x - p.x, mdy = mouse.y - p.y;
         var md = Math.sqrt(mdx * mdx + mdy * mdy);
