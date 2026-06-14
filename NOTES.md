@@ -22,12 +22,12 @@ Deploy manually with: `npx vercel deploy --prod --yes` from project root.
 - Footer "Privacy Policy" + "Terms & Conditions" links are `#` placeholders (no pages yet).
 - Old blog archive (63 beyondthedreamboard posts) not migrated — Articles page is Substack-only by design.
 - Podcast page Spotify/Apple buttons still point to the old beyondthedreamboard grey-matters page.
-- Speaking page contact email is `viveka@beyondthedreamboard.com` (she hasn't activated `viveka@vivekavonrosen.com` yet) — swap site-wide when she does.
+- Email: `viveka@vivekavonrosen.com` now RECEIVES via ImprovMX (free) → forwards to vivekavr@gmail.com. DNS at GoDaddy (MX mx1/mx2.improvmx.com 10/20 + SPF `v=spf1 include:spf.improvmx.com ~all`); ImprovMX domain verified green; alias is a catch-all/`viveka`. SENDING-as still needs paid SMTP (ImprovMX Premium $9/mo or Workspace) — replies currently go from gmail.com. Site still DISPLAYS `viveka@beyondthedreamboard.com` (speaker page); swap to vivekavonrosen.com address pending her go-ahead. NOTE: GoDaddy is hard-blocked from browser tools — she must make DNS changes herself; I verify via `dig`.
 - Grey-hair photo (`viv-grey.jpg`) processed but not placed anywhere.
 - Her image folder has unused landing-page mockups (VVR landing page V2/V3, Home page mock up V1).
 
 ## Next step
-Pick up wherever she directs. Likely candidates: (1) build real Privacy/Terms pages, (2) activate + swap the vivekavonrosen.com email, (3) fix podcast Spotify/Apple links, or (4) more design tweaks. No blocking issues — site is fully live.
+Pick up wherever she directs. Likely candidates: (1) swap the site to display viveka@vivekavonrosen.com now that it receives, (2) build real Privacy/Terms pages, (3) fix podcast Spotify/Apple links, or (4) more design tweaks. No blocking issues — site is fully live.
 
 ---
 
@@ -35,3 +35,5 @@ Pick up wherever she directs. Likely candidates: (1) build real Privacy/Terms pa
 
 ### 2026-06-14
 Built the whole site this stretch. Highlights: deployed to www.vivekavonrosen.com and fixed the GoDaddy forwarding/DNS + SSL; redesigned the entrance several times landing on the starfield→phoenix version with her real gold scrollwork backdrop (she rejected a spinning-vortex redesign — reverted it); did interior visual passes 1–6 (portal sections, imagery, cards, buttons, rung numbers, dividers); wired Substack RSS into the Articles page via serverless function; doubled eyebrow/rung-label sizes; rebuilt the Speaking page twice — final version is a verbatim replica of her vibecoded speaker page (scrolling marquee, keynotes, one-sheet PDF, orange-jacket gallery image fixed to show her head). Repo restructured into `site/` and connected to Vercel for auto-deploy. Ended: site fully live, no blockers.
+
+Later same day: set up email forwarding — added ImprovMX MX+SPF records at GoDaddy (she added them herself since GoDaddy is browser-blocked), verified ImprovMX green, confirmed receiving works to her Gmail. Removed the AI Base Camp tile from the Events page. Site displays beyondthedreamboard email still (swap pending). No blockers.
