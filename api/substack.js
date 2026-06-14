@@ -43,11 +43,19 @@ export default async function handler(req, res) {
       let date = dateRaw;
       const d = new Date(dateRaw);
       if (!isNaN(d)) date = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      // cover image from <enclosure url="...">
-      const enc = it.match(/<enclosure[^>]*url="([^"]+)"/);
-      const image = enc ? enc[1] : '';
+      // cover image: use the enclosure only if it's an image (podcast posts enclose audio),
+      // otherwise grab the first image inside the post body
+      const encBlock = (it.match(/<enclosure[^>]*\/?>/) || [''])[0];
+      const encUrl = (encBlock.match(/url="([^"]+)"/) || [])[1] || '';
+      const encType = (encBlock.match(/type="([^"]+)"/) || [])[1] || '';
+      const rawBody = pick(it, 'content:encoded');
+      let image = (encType.indexOf('image') === 0 || /\.(jpe?g|png|webp|gif)(\?|$)/i.test(encUrl)) ? encUrl : '';
+      if (!image) {
+        const im = rawBody.match(/<img[^>]*src="([^"]+)"/);
+        image = im ? im[1] : '';
+      }
       // excerpt: prefer the post body, fall back to the subtitle/description
-      const body = clean(pick(it, 'content:encoded'));
+      const body = clean(rawBody);
       const desc = clean(pick(it, 'description'));
       const excerpt = truncate(body.length > 60 ? body : desc, 150);
       return { title, link, date, image, excerpt };
