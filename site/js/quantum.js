@@ -53,7 +53,7 @@
   var WORDS_MS = (PAIRS - 1) * WORD_SPACING + WORD_LIFE;
   var COLLAPSE_MS = 1300;               // final pull + bloom
 
-  var N = Math.min(1700, Math.max(620, Math.floor((W * H) / 1300)));
+  var N = Math.min(2100, Math.max(900, Math.floor((W * H) / 1100)));
   var particles = [];
 
   // preload the real phoenix logo so the entrance can assemble it pixel-accurate
@@ -181,7 +181,7 @@
     octx.fillText(word, off.width / 2, off.height / 2);
     var data = octx.getImageData(0, 0, off.width, off.height).data;
     var pts = [];
-    var step = 5;
+    var step = 4;
     for (var y = 0; y < off.height; y += step) {
       for (var x = 0; x < off.width; x += step) {
         if (data[(y * off.width + x) * 4 + 3] > 128) {
@@ -286,10 +286,16 @@
     modeTimer += dt * 16.7;
 
     if (mode === 'drift' && modeTimer > 2400) {
-      mode = 'word';
-      modeTimer = 0;
-      assignWord(WORDS[wordIndex % WORDS.length]);
-      wordIndex++;
+      if (wordIndex >= WORDS.length) {
+        // shown every word once — now settle onto the phoenix and rest there
+        mode = 'rest';
+        assignPhoenix();
+      } else {
+        mode = 'word';
+        modeTimer = 0;
+        assignWord(WORDS[wordIndex]);
+        wordIndex++;
+      }
     } else if (mode === 'word' && modeTimer > 3000) {
       mode = 'drift';
       modeTimer = 0;
@@ -327,9 +333,10 @@
         p.x += dx * pull + (-dy / dist) * swirl * dist;
         p.y += dy * pull + (dx / dist) * swirl * dist;
       } else if (p.tx !== null) {
-        var k = mode === 'phoenix' ? 0.17 : 0.06;
+        var phx = (mode === 'phoenix' || mode === 'rest');
+        var k = phx ? 0.17 : 0.06;
         var ddx = p.tx - p.x, ddy = p.ty - p.y;
-        if (mode === 'phoenix' && ddx * ddx + ddy * ddy < 4) {
+        if (phx && ddx * ddx + ddy * ddy < 4) {
           p.x = p.tx; p.y = p.ty;        // snap home so the bird reads crisply
         } else {
           p.x += ddx * k * dt;
@@ -350,7 +357,7 @@
 
       var alpha = p.a * (0.65 + 0.35 * Math.sin(p.tw));
       var color = p.color;
-      if (mode === 'phoenix' && p.phxColor) {
+      if ((mode === 'phoenix' || mode === 'rest') && p.phxColor) {
         alpha = Math.min(1, alpha + 0.35);
         color = p.phxColor;
       } else if (mode === 'vortex') {
@@ -390,11 +397,11 @@
   var raf = requestAnimationFrame(frame);
 
   function enter(dest) {
-    if (mode === 'phoenix' || mode === 'vortex') return;
+    if (mode === 'vortex') return;
     destination = dest || '';
-    mode = 'phoenix';
-    phoenixStart = performance.now();
-    assignPhoenix();
+    assignPhoenix();               // ensure phoenix colors for the exit swirl
+    mode = 'vortex';
+    vortexStart = performance.now();
     entrance.classList.add('entering');
   }
 
