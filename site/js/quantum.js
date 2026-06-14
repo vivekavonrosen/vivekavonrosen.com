@@ -285,7 +285,7 @@
     last = now;
     modeTimer += dt * 16.7;
 
-    if (mode === 'drift' && modeTimer > 2400) {
+    if (mode === 'drift' && modeTimer > 500) {
       if (wordIndex >= WORDS.length) {
         // shown every word once — now settle onto the phoenix and rest there
         mode = 'rest';
@@ -296,7 +296,7 @@
         assignWord(WORDS[wordIndex]);
         wordIndex++;
       }
-    } else if (mode === 'word' && modeTimer > 3000) {
+    } else if (mode === 'word' && modeTimer > 2500) {
       mode = 'drift';
       modeTimer = 0;
       releaseTargets();
