@@ -313,6 +313,30 @@ body.entrance-active{ overflow:hidden; }
   #enter-btn{ animation:none; }
 }
 
+/* ---------- portal sections — rich dark bands that echo the entrance ---------- */
+.section--dark, .section--deep{ position:relative; overflow:hidden; }
+.section--dark{ background:url('../images/stars-tile.png') repeat, var(--grad-purple); }
+.section--deep{ background:url('../images/stars-tile.png') repeat, var(--p-purple-deep); }
+/* gold scrollwork settling into the lower corners */
+.section--dark::before, .section--deep::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    url('../images/scroll-corner-l.png') left bottom / clamp(170px,22vw,340px) no-repeat,
+    url('../images/scroll-corner-r.png') right bottom / clamp(170px,22vw,340px) no-repeat;
+  opacity:.5;
+}
+/* ghost phoenix watermark behind the words */
+.section--dark::after, .section--deep::after{
+  content:""; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:clamp(240px,32vw,460px); aspect-ratio:520/507;
+  background:url('../images/phoenix-mark.png') center / contain no-repeat;
+  opacity:.06; z-index:0; pointer-events:none;
+}
+.section--dark > .wrap, .section--deep > .wrap{ position:relative; z-index:1; }
+@media (max-width:600px){
+  .section--dark::before, .section--deep::before{ opacity:.38; background-size:42vw; }
+}
+
 /* ---------- misc ---------- */
 .note{ font-size:.88rem; color:var(--p-slate); }
 .checklist{ list-style:none; margin:24px 0; }
