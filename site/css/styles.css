@@ -365,6 +365,22 @@ body.entrance-active{ overflow:hidden; }
   letter-spacing:.04em; margin-bottom:6px; opacity:.9;
 }
 
+/* ---------- Substack post cards ---------- */
+.post-card{ padding:0; overflow:hidden; }
+.post-thumb{
+  display:block; width:100%; aspect-ratio:16/10;
+  background-size:cover; background-position:center top; background-color:var(--p-purple-deep);
+}
+.post-body{ padding:28px; display:flex; flex-direction:column; flex:1; }
+.post-date{
+  font-family:'Bebas Neue', sans-serif; letter-spacing:.16em;
+  color:var(--p-teal); font-size:1rem; display:block; margin-bottom:8px;
+}
+.post-card h3{ margin-bottom:10px; }
+.post-card h3 a{ color:var(--p-purple); }
+.post-card h3 a:hover{ color:var(--p-purple-light); }
+.post-body .note:last-child{ margin-top:auto; padding-top:10px; }
+
 /* ---------- framed photos (branded imagery treatment) ---------- */
 .framed{
   border-radius:3px; box-shadow:var(--p-shadow);

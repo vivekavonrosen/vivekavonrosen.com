@@ -40,26 +40,37 @@
 
 <section class="section" style="background:#fff">
   <div class="wrap">
-    <span class="eyebrow">From the Archive</span>
-    <h2>Selected pieces</h2>
+    <span class="eyebrow">Latest from the Substack</span>
+    <h2>Reinvention Reads &amp; Tech Talks</h2>
     <hr class="gold-rule">
-    <div class="grid-3" style="margin-top:30px">
-      <div class="card"><h3 style="font-size:1.2rem">Everyone's Using the Wrong AI Tool (and They Don't Even Know It Yet)</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/everyone-using-the-wrong-ai-tool-and-they-dont-even-know-it-yet">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Why Your Voice Still Isn't Resonating — Even If You Swear It's Authentic</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/50-and-your-voice-is-not-being-heard">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Saving Time and Making Money with AI — as a 50+ Female Entrepreneur</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/everything-you-need-to-know-about-saving-time-and-making-money-with-ai-as-a-50-female-entrepreneur">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">What Works on Substack for Women 50+</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/what-works-on-substack-for-women-50">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Grey Hair, Bold Moves: Reinventing Yourself After 50</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/grey-hair-bold-moves-reinventing-yourself-after-50">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">From Corporate to Confident: Leadership Lessons for Your Second Act</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/from-corporate-to-confident-leadership-lessons-for-your-second-act">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Navigating the Liminal Zone</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/navigating-liminal-zone">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Punk Girls Make Powerful Women</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/punk-girls-make-powerful-women">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Intuition Is a Muscle</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/intuition-is-a-muscle">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">10 Reasons Why Women 50+ Should Join a Mastermind</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/10-reasons-why-women-50-should-join-a-mastermind">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Midlife Career Change? Let's Talk About Your Brain First</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/midlife-career-change-lets-talk-about-your-brain-first">Read →</a></p></div>
-      <div class="card"><h3 style="font-size:1.2rem">Career Barriers for Older Execs: The Silver Ceiling</h3><p class="note"><a href="https://www.beyondthedreamboard.com/blog/career-barriers-for-older-execs-silver-ceiling">Read →</a></p></div>
+    <div id="posts" class="grid-3" style="margin-top:30px">
+      <p class="note" id="posts-loading">Loading the latest posts…</p>
     </div>
-    <p class="note center" style="margin-top:30px">The full archive (60+ pieces) is being migrated — every article stays readable at its original link in the meantime.</p>
+    <p class="note center" style="margin-top:36px"><a href="https://vivekavonrosen.substack.com" target="_blank" rel="noopener">See every post on Substack →</a></p>
   </div>
 </section>
+
+<script>
+(function () {
+  var grid = document.getElementById('posts');
+  function esc(s){ return (s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  fetch('/api/substack').then(function(r){ return r.json(); }).then(function(data){
+    if (!data.posts || !data.posts.length) throw new Error('no posts');
+    grid.innerHTML = data.posts.map(function(p){
+      var img = p.image ? '<a href="'+esc(p.link)+'" target="_blank" rel="noopener" class="post-thumb" style="background-image:url(\''+esc(p.image)+'\')"></a>' : '';
+      return '<article class="card post-card">' + img +
+        '<div class="post-body">' +
+        '<span class="post-date">'+esc(p.date)+'</span>' +
+        '<h3 style="font-size:1.2rem"><a href="'+esc(p.link)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a></h3>' +
+        '<p class="note">'+esc(p.excerpt)+'</p>' +
+        '<p class="note"><a href="'+esc(p.link)+'" target="_blank" rel="noopener">Read on Substack →</a></p>' +
+        '</div></article>';
+    }).join('');
+  }).catch(function(){
+    grid.innerHTML = '<p class="note center" style="grid-column:1/-1">My latest writing lives on Substack — <a href="https://vivekavonrosen.substack.com" target="_blank" rel="noopener">read it all here →</a></p>';
+  });
+})();
+</script>
 
 <section class="section section--dark center">
   <div class="wrap">
