@@ -53,8 +53,14 @@
   var WORDS_MS = (PAIRS - 1) * WORD_SPACING + WORD_LIFE;
   var COLLAPSE_MS = 1300;               // final pull + bloom
 
-  var N = Math.min(1000, Math.floor((W * H) / 1600));
+  var N = Math.min(1700, Math.max(620, Math.floor((W * H) / 1300)));
   var particles = [];
+
+  // preload the real phoenix logo so the entrance can assemble it pixel-accurate
+  var phoenixImg = new Image();
+  var phoenixReady = false;
+  phoenixImg.onload = function () { phoenixReady = true; };
+  phoenixImg.src = 'images/phoenix-mark.png';
   var mouse = { x: -9999, y: -9999 };
   var mode = 'drift';                   // drift | word | phoenix | vortex
   var wordIndex = 0;
@@ -88,54 +94,30 @@
     });
   }
 
-  /* ---- the phoenix silhouette (approximation of Viveka's mark:
-     swept-wing bird inside an open ring). Drawn offscreen and
-     sampled into particle targets. Ring samples red, bird blue,
-     so ring stars go gold and bird stars go purple/teal. ---- */
+  /* ---- sample Viveka's actual phoenix logo into particle targets,
+     carrying each pixel's real gradient color so the stars assemble
+     the true purple-blue-gold mark. Falls back to a drawn silhouette
+     if the image hasn't loaded yet. ---- */
   function phoenixTargets() {
-    var vw = 880, vh = 1160;
-    var s = Math.min((H * 0.60) / vh, (W * 0.70) / vw);
+    if (!phoenixReady) return phoenixTargetsFallback();
+    var iw = phoenixImg.naturalWidth, ih = phoenixImg.naturalHeight;
+    var scale = Math.min((H * 0.64) / ih, (W * 0.72) / iw);
+    var dw = Math.round(iw * scale), dh = Math.round(ih * scale);
     var off = document.createElement('canvas');
-    off.width = Math.ceil(vw * s); off.height = Math.ceil(vh * s);
+    off.width = dw; off.height = dh;
     var o = off.getContext('2d');
-    o.scale(s, s);
-
-    // ring (gold) — open at the lower-left where the bird breaks through
-    o.strokeStyle = '#f00';
-    o.lineWidth = 52;
-    o.beginPath();
-    o.arc(520, 560, 330, -2.55, 2.05);
-    o.stroke();
-
-    // bird (purples/teals)
-    o.fillStyle = '#00f';
-    var paths = [
-      // body + head, tapering down
-      'M560,400 C600,420 592,472 566,524 C540,582 502,652 472,702 C456,728 440,742 430,736 C444,660 460,560 480,480 C494,430 528,394 560,400 Z',
-      // beak notch
-      'M560,398 L600,418 L562,432 Z',
-      // three swept wings
-      'M500,470 C380,330 220,180 60,56 C140,220 280,362 432,472 Z',
-      'M482,502 C360,420 200,330 88,288 C190,420 342,512 452,542 Z',
-      'M470,542 C380,520 278,520 208,560 C300,612 402,612 462,582 Z',
-      // three tail streamers
-      'M440,720 C400,820 350,940 278,1042 C360,980 422,880 456,780 Z',
-      'M456,760 C440,860 410,962 368,1062 C430,990 472,890 482,800 Z',
-      'M472,792 C482,892 472,992 450,1092 C502,1002 512,892 502,812 Z'
-    ];
-    for (var p = 0; p < paths.length; p++) o.fill(new Path2D(paths[p]));
-
-    var data = o.getImageData(0, 0, off.width, off.height).data;
+    o.drawImage(phoenixImg, 0, 0, dw, dh);
+    var data = o.getImageData(0, 0, dw, dh).data;
     var pts = [];
     var step = 4;
-    var ox = (W - off.width) / 2, oy = (H - off.height) / 2 - H * 0.03;
-    for (var y = 0; y < off.height; y += step) {
-      for (var x = 0; x < off.width; x += step) {
-        var idx = (y * off.width + x) * 4;
-        if (data[idx + 3] > 128) {
+    var ox = (W - dw) / 2, oy = (H - dh) / 2 - H * 0.02;
+    for (var y = 0; y < dh; y += step) {
+      for (var x = 0; x < dw; x += step) {
+        var idx = (y * dw + x) * 4;
+        if (data[idx + 3] > 130) {
           pts.push({
             x: x + ox, y: y + oy,
-            gold: data[idx] > 128        // red channel = ring
+            color: data[idx] + ',' + data[idx + 1] + ',' + data[idx + 2]
           });
         }
       }
@@ -143,26 +125,69 @@
     return pts;
   }
 
+  // drawn-silhouette fallback (only used if the logo png is slow to load)
+  function phoenixTargetsFallback() {
+    var vw = 880, vh = 1160;
+    var s = Math.min((H * 0.60) / vh, (W * 0.70) / vw);
+    var off = document.createElement('canvas');
+    off.width = Math.ceil(vw * s); off.height = Math.ceil(vh * s);
+    var o = off.getContext('2d');
+    o.scale(s, s);
+    o.strokeStyle = '#f00'; o.lineWidth = 52;
+    o.beginPath(); o.arc(520, 560, 330, -2.55, 2.05); o.stroke();
+    o.fillStyle = '#00f';
+    var paths = [
+      'M560,400 C600,420 592,472 566,524 C540,582 502,652 472,702 C456,728 440,742 430,736 C444,660 460,560 480,480 C494,430 528,394 560,400 Z',
+      'M560,398 L600,418 L562,432 Z',
+      'M500,470 C380,330 220,180 60,56 C140,220 280,362 432,472 Z',
+      'M482,502 C360,420 200,330 88,288 C190,420 342,512 452,542 Z',
+      'M470,542 C380,520 278,520 208,560 C300,612 402,612 462,582 Z',
+      'M440,720 C400,820 350,940 278,1042 C360,980 422,880 456,780 Z',
+      'M456,760 C440,860 410,962 368,1062 C430,990 472,890 482,800 Z',
+      'M472,792 C482,892 472,992 450,1092 C502,1002 512,892 502,812 Z'
+    ];
+    for (var p = 0; p < paths.length; p++) o.fill(new Path2D(paths[p]));
+    var data = o.getImageData(0, 0, off.width, off.height).data;
+    var pts = [], step = 4;
+    var ox = (W - off.width) / 2, oy = (H - off.height) / 2 - H * 0.03;
+    for (var y = 0; y < off.height; y += step) {
+      for (var x = 0; x < off.width; x += step) {
+        var idx = (y * off.width + x) * 4;
+        if (data[idx + 3] > 128) {
+          pts.push({ x: x + ox, y: y + oy, color: data[idx] > 128 ? GOLD : BIRD_COLORS[Math.floor(Math.random() * BIRD_COLORS.length)] });
+        }
+      }
+    }
+    return pts;
+  }
+
+  /* Big star-words: each word is fit to fill ~the center third —
+     capped by 90% of width OR 34% of viewport height, whichever
+     comes first, so short words ("AI") go huge and long ones
+     ("SUBSTACK") fill the width without clipping. */
   function wordTargets(word) {
     var off = document.createElement('canvas');
-    var s = Math.min(W * 0.82, 900);
-    off.width = s; off.height = s * 0.34;
+    off.width = W; off.height = Math.round(H * 0.5);
     var octx = off.getContext('2d');
+    var fontSize = H * 0.34;
+    octx.font = fontSize + 'px "Bebas Neue", sans-serif';
+    var maxW = W * 0.9;
+    var measured = octx.measureText(word).width;
+    if (measured > maxW) {
+      fontSize = fontSize * maxW / measured;
+      octx.font = fontSize + 'px "Bebas Neue", sans-serif';
+    }
     octx.fillStyle = '#fff';
-    octx.font = (s * 0.22) + 'px "Bebas Neue", sans-serif';
     octx.textAlign = 'center';
     octx.textBaseline = 'middle';
     octx.fillText(word, off.width / 2, off.height / 2);
     var data = octx.getImageData(0, 0, off.width, off.height).data;
     var pts = [];
-    var step = 4;
+    var step = 5;
     for (var y = 0; y < off.height; y += step) {
       for (var x = 0; x < off.width; x += step) {
         if (data[(y * off.width + x) * 4 + 3] > 128) {
-          pts.push({
-            x: x + (W - off.width) / 2,
-            y: y + H * 0.40 - off.height / 2
-          });
+          pts.push({ x: x, y: y + H * 0.42 - off.height / 2 });
         }
       }
     }
@@ -174,12 +199,8 @@
     if (!pts.length) return;
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
-      if (i < pts.length * 0.98) {
-        var t = pts[Math.floor(Math.random() * pts.length)];
-        p.tx = t.x; p.ty = t.y;
-      } else {
-        p.tx = null; p.ty = null;
-      }
+      var t = pts[Math.floor(Math.random() * pts.length)];
+      p.tx = t.x; p.ty = t.y;
     }
   }
 
@@ -188,10 +209,10 @@
     if (!pts.length) return;
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
-      // stride through the silhouette so stars cover the whole bird evenly
+      // stride through the mark so stars cover it evenly, carrying real color
       var t = pts[Math.floor(i / particles.length * pts.length)];
       p.tx = t.x; p.ty = t.y;
-      p.phxColor = t.gold ? GOLD : BIRD_COLORS[Math.floor(Math.random() * BIRD_COLORS.length)];
+      p.phxColor = t.color || GOLD;
     }
   }
 
