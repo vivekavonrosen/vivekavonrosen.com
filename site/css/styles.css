@@ -381,6 +381,20 @@ body.entrance-active{ overflow:hidden; }
 .post-card h3 a:hover{ color:var(--p-purple-light); }
 .post-body .note:last-child{ margin-top:auto; padding-top:10px; }
 
+/* ---------- speaker gallery bar ---------- */
+.gallery-bar{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:4px;
+  background:var(--p-purple-deep);
+}
+.gallery-bar img{
+  width:100%; height:clamp(260px, 32vw, 460px); object-fit:cover; object-position:center top;
+  display:block;
+}
+@media (max-width:700px){
+  .gallery-bar{ grid-template-columns:1fr; }
+  .gallery-bar img{ height:60vw; }
+}
+
 /* ---------- framed photos (branded imagery treatment) ---------- */
 .framed{
   border-radius:3px; box-shadow:var(--p-shadow);
