@@ -313,6 +313,64 @@ body.entrance-active{ overflow:hidden; }
   #enter-btn{ animation:none; }
 }
 
+/* ---------- card polish ---------- */
+.card{ position:relative; transition:transform .28s ease, box-shadow .28s ease; }
+.card::after{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--p-gold), var(--p-purple-light));
+  border-radius:3px 3px 0 0;
+}
+.card:hover{ transform:translateY(-6px); box-shadow:0 30px 72px -22px rgba(87,31,129,.5); }
+
+/* ---------- gold pill CTAs (match the entrance button) ---------- */
+.btn--gold{
+  background:linear-gradient(180deg,#F6E2A6 0%,#DFB24A 55%,#C9952F 100%) !important;
+  color:var(--p-purple-deep) !important;
+  border:none !important; border-radius:40px;
+  box-shadow:0 0 26px rgba(223,178,74,.4), inset 0 1px 0 rgba(255,255,255,.55);
+}
+.btn--gold:hover{ transform:translateY(-2px); box-shadow:0 0 42px rgba(223,178,74,.65), inset 0 1px 0 rgba(255,255,255,.55); }
+
+/* ---------- in-content link underline sweep ---------- */
+.section p a:not(.btn), .hero p a:not(.btn){
+  background-image:linear-gradient(currentColor, currentColor);
+  background-size:0% 1.5px; background-repeat:no-repeat; background-position:left 100%;
+  transition:background-size .3s ease; padding-bottom:1px;
+}
+.section p a:not(.btn):hover, .hero p a:not(.btn):hover{ background-size:100% 1.5px; }
+
+/* ---------- refined dividers ---------- */
+.gold-rule{
+  background:linear-gradient(90deg, var(--p-gold), rgba(223,178,74,.25));
+}
+.center .gold-rule{
+  background:linear-gradient(90deg, transparent, var(--p-gold) 30%, var(--p-gold) 70%, transparent);
+}
+/* ornamental section flourish — gold hairlines flanking a small mark */
+.flourish{
+  display:flex; align-items:center; justify-content:center; gap:16px;
+  max-width:300px; margin:0 auto; padding:6px 0; color:var(--p-gold);
+}
+.flourish::before, .flourish::after{
+  content:""; height:1px; flex:1;
+  background:linear-gradient(90deg, transparent, rgba(223,178,74,.7));
+}
+.flourish::after{ background:linear-gradient(90deg, rgba(223,178,74,.7), transparent); }
+.flourish span{ font-size:.9rem; letter-spacing:.3em; opacity:.9; }
+
+/* ---------- rung numbers (the ascending ladder) ---------- */
+.rung-num{
+  font-family:'Bebas Neue', sans-serif; display:block;
+  font-size:2.6rem; line-height:1; color:var(--p-gold);
+  letter-spacing:.04em; margin-bottom:6px; opacity:.9;
+}
+
+/* ---------- framed photos (branded imagery treatment) ---------- */
+.framed{
+  border-radius:3px; box-shadow:var(--p-shadow);
+  border:1px solid rgba(223,178,74,.4);
+}
+
 /* ---------- portal sections — rich dark bands that echo the entrance ---------- */
 .section--dark, .section--deep{ position:relative; overflow:hidden; }
 .section--dark{ background:url('../images/stars-tile.png') repeat, var(--grad-purple); }

@@ -51,7 +51,7 @@
   var WORD_LIFE = 2100;                 // each word: fade in, hold, get drawn in
   var PAIRS = Math.ceil(WORDS.length / 2);
   var WORDS_MS = (PAIRS - 1) * WORD_SPACING + WORD_LIFE;
-  var COLLAPSE_MS = 1300;               // final pull + bloom
+  var COLLAPSE_MS = 850;                // quick exit vortex + bloom (under 1s)
 
   var N = Math.min(2100, Math.max(900, Math.floor((W * H) / 1100)));
   var particles = [];
@@ -317,7 +317,7 @@
     var elapsed = 0, collapseT = 0;
     if (mode === 'vortex') {
       elapsed = now - vortexStart;
-      collapseT = Math.max(0, (elapsed - WORDS_MS) / COLLAPSE_MS);   // 0 → 1 in the finale
+      collapseT = elapsed / COLLAPSE_MS;   // ramps 0 → 1 immediately for a fast exit
     }
 
     for (var i = 0; i < particles.length; i++) {
@@ -327,9 +327,9 @@
       if (mode === 'vortex') {
         var dx = W / 2 - p.x, dy = H / 2 - p.y;
         var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        // a slow ambient swirl while the words play, then the real pull
-        var pull = (0.004 + collapseT * 0.22) * dt;
-        var swirl = (0.016 + collapseT * 0.06) * dt;
+        // fast inward spiral — a quick vortex that sucks everything to center
+        var pull = (0.06 + collapseT * 0.34) * dt;
+        var swirl = (0.05 + collapseT * 0.05) * dt;
         p.x += dx * pull + (-dy / dist) * swirl * dist;
         p.y += dy * pull + (dx / dist) * swirl * dist;
       } else if (p.tx !== null) {
@@ -376,15 +376,9 @@
     }
 
     if (mode === 'vortex') {
-      // technologies surface one pair at a time, readable, then get drawn in
-      for (var w = 0; w < WORDS.length; w++) {
-        var startAt = Math.floor(w / 2) * WORD_SPACING;
-        var t = (elapsed - startAt) / WORD_LIFE;
-        if (t > 0 && t < 1) drawFlyWord(WORDS[w], t, w);
-      }
-      // bloom
-      if (collapseT > 0.55) {
-        var bloom = (collapseT - 0.55) / 0.45;
+      // quick gold-cream bloom as the vortex finishes, then navigate
+      if (collapseT > 0.5) {
+        var bloom = (collapseT - 0.5) / 0.5;
         ctx.fillStyle = 'rgba(250,246,238,' + Math.min(1, bloom) + ')';
         ctx.fillRect(0, 0, W, H);
       }
