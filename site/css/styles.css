@@ -10,9 +10,10 @@
   --p-gold:         #DFB24A;
   --p-teal:         #2C97AF;
   --p-ink:          #1A1320;
-  --p-slate:        #4A4356;
+  --p-slate:        #3D3647;  /* muted body text on cream — deepened for contrast */
   --p-cream:        #FAF6EE;
-  --p-lavender:     #B8AECF;
+  --p-lavender:     #B8AECF;  /* decorative lavender (filigree, fine accents) */
+  --p-on-dark:      #E4DCF2;  /* body text on purple panels — bright, readable */
   --p-line:    rgba(87, 31, 129, 0.14);
   --p-shadow:  0 20px 60px -25px rgba(87, 31, 129, .3);
   --grad-purple: linear-gradient(135deg,#571F81 0%,#7B3BAD 100%);
@@ -48,10 +49,22 @@ strong{ color:var(--p-purple); }
 .section--tight{ padding:56px 0; }
 .section--dark{ background:var(--grad-purple); color:#fff; }
 .section--dark h2, .section--dark h3{ color:#fff; }
-.section--dark p{ color:var(--p-lavender); }
+.section--dark p{ color:var(--p-on-dark); }
 .section--deep{ background:var(--p-purple-deep); color:#fff; }
 .section--deep h2{ color:#fff; }
-.section--deep p{ color:var(--p-lavender); }
+.section--deep p{ color:var(--p-on-dark); }
+
+/* Anything sitting on a dark/deep panel reads light — no dark-on-dark. */
+.section--dark, .section--deep,
+.section--dark li, .section--deep li,
+.section--dark .lead, .section--deep .lead,
+.section--dark .note, .section--deep .note,
+.section--dark .checklist li, .section--deep .checklist li{ color:var(--p-on-dark); }
+.section--dark .accent, .section--deep .accent{ color:#fff; }
+.section--dark strong, .section--deep strong{ color:var(--p-gold); }
+.section--dark .quote, .section--deep .quote{ color:#fff; }
+.section--dark a:not(.btn), .section--deep a:not(.btn){ color:var(--p-gold); }
+.section--dark .checklist li::before, .section--deep .checklist li::before{ color:var(--p-gold); }
 
 .hairline{ border:none; border-top:1px solid var(--p-line); margin:0; }
 .gold-rule{ width:64px; height:2px; background:var(--p-gold); border:none; margin:18px 0 28px; }
@@ -137,6 +150,7 @@ strong{ color:var(--p-purple); }
 .card{
   background:#fff; border:1px solid var(--p-line); border-radius:3px;
   box-shadow:var(--p-shadow); padding:36px;
+  display:flex; flex-direction:column;   /* let the button settle to the bottom */
 }
 .card h3{ margin-bottom:6px; }
 .card .price{
@@ -145,6 +159,9 @@ strong{ color:var(--p-purple); }
 }
 .card ul{ margin:0 0 22px 19px; color:var(--p-slate); }
 .card li{ margin-bottom:7px; }
+/* the action button sits at the bottom edge, so buttons line up across a row */
+.card .btn{ margin-top:auto; align-self:flex-start; }
+.card.center .btn{ align-self:center; }
 .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
 .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
 @media (max-width:880px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
@@ -165,7 +182,8 @@ strong{ color:var(--p-purple); }
 
 /* ---------- press strip ---------- */
 .press-strip{ display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; padding:34px 0; }
-.press-strip img{ height:30px; width:auto; filter:grayscale(1) contrast(.7); opacity:.7; }
+.press-strip img{ height:30px; width:auto; filter:grayscale(1); opacity:.85; transition:opacity .2s; }
+.press-strip img:hover{ opacity:1; }
 
 /* ---------- imagery ---------- */
 .portrait{ border-radius:3px; box-shadow:var(--p-shadow); }
