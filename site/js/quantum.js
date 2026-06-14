@@ -69,10 +69,10 @@
   var destination = '';
 
   var nebulae = [
-    { x: 0.28, y: 0.30, r: 0.55, c: '87,31,129',  a: 0.50 },
-    { x: 0.78, y: 0.62, r: 0.50, c: '62,22,96',   a: 0.55 },
-    { x: 0.55, y: 0.15, r: 0.40, c: '44,40,120',  a: 0.30 },
-    { x: 0.15, y: 0.80, r: 0.45, c: '123,59,173', a: 0.22 }
+    { x: 0.28, y: 0.30, r: 0.55, c: '87,31,129',  a: 0.20 },
+    { x: 0.78, y: 0.62, r: 0.50, c: '62,22,96',   a: 0.22 },
+    { x: 0.55, y: 0.15, r: 0.40, c: '44,40,120',  a: 0.14 },
+    { x: 0.15, y: 0.80, r: 0.45, c: '123,59,173', a: 0.12 }
   ];
 
   for (var i = 0; i < N; i++) {
@@ -298,14 +298,8 @@
       releaseTargets();
     }
 
-    // night sky
+    // transparent — the gold scrollwork backdrop (CSS) shows through
     ctx.clearRect(0, 0, W, H);
-    var base = ctx.createLinearGradient(0, 0, 0, H);
-    base.addColorStop(0, '#1B0E33');
-    base.addColorStop(0.5, '#241040');
-    base.addColorStop(1, '#150823');
-    ctx.fillStyle = base;
-    ctx.fillRect(0, 0, W, H);
 
     for (var n = 0; n < nebulae.length; n++) {
       var nb = nebulae[n];

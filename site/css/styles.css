@@ -220,7 +220,11 @@ details p{ margin-top:12px; color:var(--p-slate); }
 /* ---------- entrance overlay ---------- */
 #entrance{
   position:fixed; inset:0; z-index:1000;
-  background:#1B0E33;
+  /* darkening wash over the gold scrollwork backdrop */
+  background:
+    linear-gradient(rgba(10,4,22,.55), rgba(10,4,22,.55)),
+    url('../images/scrollwork-bg.png') center center / cover no-repeat,
+    #120420;
   display:flex; align-items:center; justify-content:center;
   transition:opacity 1.2s ease;
 }
