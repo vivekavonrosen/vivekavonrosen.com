@@ -38,7 +38,7 @@
   resize();
   window.addEventListener('resize', resize);
 
-  var WORDS = ['AI', 'CLAUDE', 'LOVABLE', 'LINKEDIN', 'SUBSTACK', 'VIOS', 'WTIC'];
+  var WORDS = ['VIOS', 'AI', 'CLAUDE', 'LOVABLE', 'LINKEDIN', 'SUBSTACK', 'WTIC'];
   var GOLD = '223,178,74';
   var LAVENDER = '196,186,220';
   var WHITE = '255,250,240';
@@ -161,17 +161,15 @@
     return pts;
   }
 
-  /* Big star-words: each word is fit to fill ~the center third —
-     capped by 90% of width OR 34% of viewport height, whichever
-     comes first, so short words ("AI") go huge and long ones
-     ("SUBSTACK") fill the width without clipping. */
+  /* Star-words form ABOVE the name (upper area) so they read clearly —
+     fit to 72% width OR ~17% viewport height, whichever comes first. */
   function wordTargets(word) {
     var off = document.createElement('canvas');
-    off.width = W; off.height = Math.round(H * 0.5);
+    off.width = W; off.height = Math.round(H * 0.34);
     var octx = off.getContext('2d');
-    var fontSize = H * 0.34;
+    var fontSize = H * 0.17;
     octx.font = fontSize + 'px "Bebas Neue", sans-serif';
-    var maxW = W * 0.9;
+    var maxW = W * 0.72;
     var measured = octx.measureText(word).width;
     if (measured > maxW) {
       fontSize = fontSize * maxW / measured;
@@ -187,7 +185,7 @@
     for (var y = 0; y < off.height; y += step) {
       for (var x = 0; x < off.width; x += step) {
         if (data[(y * off.width + x) * 4 + 3] > 128) {
-          pts.push({ x: x, y: y + H * 0.42 - off.height / 2 });
+          pts.push({ x: x, y: y + H * 0.20 - off.height / 2 });
         }
       }
     }
