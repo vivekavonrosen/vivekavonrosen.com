@@ -178,6 +178,13 @@ strong{ color:var(--p-purple); }
   background:#fff !important; color:var(--p-purple) !important; border:1px solid #fff;
 }
 .btn--light:hover{ background:var(--p-cream) !important; color:var(--p-purple-deep) !important; transform:translateY(-2px); }
+/* outline-white secondary CTA on the purple hero */
+.btn--ghost-light{
+  background:transparent !important; color:#fff !important; border:1px solid rgba(255,255,255,.7);
+}
+.btn--ghost-light:hover{ background:rgba(255,255,255,.12) !important; color:#fff !important; border-color:#fff; }
+/* let the two hero buttons wrap and breathe */
+.hero-cta{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
 
 /* ---------- cards ---------- */
 .card{
