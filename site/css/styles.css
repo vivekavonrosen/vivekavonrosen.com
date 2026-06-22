@@ -160,11 +160,27 @@ strong{ color:var(--p-purple); }
 .hero-grid--media-left{ grid-template-columns:.92fr 1.08fr; }
 @media (max-width:880px){ .hero-grid--media-left{ grid-template-columns:1fr; } }
 .hero--purple .hero-cutout{
-  max-width:480px;
-  filter:drop-shadow(0 26px 46px rgba(0,0,0,.4));
+  position:relative; z-index:1; max-width:540px; margin-bottom:0;
+  filter:drop-shadow(0 26px 40px rgba(0,0,0,.38));
 }
-.hero-figure{ position:relative; }
-.hero-caption{ text-align:center; margin-top:6px; }
+.hero-figure{ position:relative; display:flex; justify-content:center; }
+/* soft radial glow behind the figure, like the Dreamboard hero */
+.hero-figure::before{
+  content:""; position:absolute; z-index:0; pointer-events:none;
+  left:50%; top:44%; transform:translate(-50%,-50%);
+  width:84%; aspect-ratio:1/1; border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(206,172,240,.60) 0%,
+    rgba(160,112,206,.30) 40%,
+    rgba(123,59,173,0) 70%);
+  filter:blur(8px);
+}
+/* name + titles overlay the lower portion of the photo */
+.hero-caption{
+  position:absolute; z-index:2; left:0; right:0; bottom:5%;
+  text-align:center; padding:0 12px;
+  text-shadow:0 2px 16px rgba(28,8,46,.6);
+}
 .hero-caption-name{
   display:block; font-family:'Bebas Neue', sans-serif; letter-spacing:.14em;
   font-size:1.5rem; color:#fff; line-height:1.1;
