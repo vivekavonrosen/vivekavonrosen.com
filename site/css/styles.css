@@ -149,23 +149,24 @@ strong{ color:var(--p-purple); }
 @media (max-width:880px){ .hero-grid{ grid-template-columns:1fr; } }
 
 /* ---------- home hero: purple variant (home page only) ---------- */
-.hero--purple{ background:var(--grad-purple); color:#fff; padding:96px 0 0; overflow:hidden; }
-.hero--purple h1{ color:#fff; }
-.hero--purple .lead{ color:#fff; font-size:1.2rem; max-width:34em; }
-.hero--purple .hero-underline{
-  text-decoration:underline; text-decoration-color:rgba(255,255,255,.95);
-  text-underline-offset:10px; text-decoration-thickness:4px;
+.hero--purple{ background:var(--grad-purple); color:#fff; padding:84px 0 0; overflow:hidden; }
+/* the hero runs wider than the rest of the page, like the Dreamboard banner */
+.hero--purple .wrap{ max-width:1280px; }
+.hero--purple h1{
+  color:#fff; font-size:clamp(2.7rem, 4.4vw, 4.3rem); line-height:1.02;
+  letter-spacing:.035em; margin-bottom:22px;
 }
+.hero--purple .lead{ color:#fff; font-size:1.18rem; max-width:30em; margin-bottom:30px; }
 /* photo on the left, copy on the right; photo anchored to the bottom edge */
-.hero-grid--media-left{ grid-template-columns:.92fr 1.08fr; align-items:end; gap:0 56px; }
-/* keep the headline/copy vertically centered with breathing room at the bottom */
-.hero-grid--media-left > div:last-child{ align-self:center; padding-bottom:88px; }
+.hero-grid--media-left{ grid-template-columns:1fr 1.05fr; align-items:end; gap:0 56px; }
+/* headline/copy vertically centered to balance against the photo */
+.hero-copy{ align-self:center; padding:24px 0 56px; }
 @media (max-width:880px){
   .hero-grid--media-left{ grid-template-columns:1fr; }
-  .hero-grid--media-left > div:last-child{ padding-bottom:72px; }
+  .hero-copy{ align-self:auto; padding:8px 0 56px; }
 }
 .hero--purple .hero-cutout{
-  position:relative; z-index:1; max-width:540px; margin-bottom:0;
+  position:relative; z-index:1; width:100%; max-width:700px; margin-bottom:0;
   filter:drop-shadow(0 26px 40px rgba(0,0,0,.38));
 }
 .hero-figure{ position:relative; display:flex; justify-content:center; align-self:end; }
