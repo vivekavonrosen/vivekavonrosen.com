@@ -174,13 +174,14 @@ strong{ color:var(--p-purple); }
 /* soft radial glow behind the figure, like the Dreamboard hero */
 .hero-figure::before{
   content:""; position:absolute; z-index:0; pointer-events:none;
-  left:50%; top:44%; transform:translate(-50%,-50%);
-  width:84%; aspect-ratio:1/1; border-radius:50%;
+  left:50%; top:50%; transform:translate(-50%,-50%);
+  width:100%; aspect-ratio:1/1; border-radius:50%;
   background:radial-gradient(circle,
-    rgba(206,172,240,.60) 0%,
-    rgba(160,112,206,.30) 40%,
-    rgba(123,59,173,0) 70%);
-  filter:blur(8px);
+    rgba(247,241,253,.88) 0%,
+    rgba(214,184,244,.55) 30%,
+    rgba(156,106,204,.24) 54%,
+    rgba(123,59,173,0) 74%);
+  filter:blur(10px);
 }
 /* name + titles overlay the lower portion of the photo */
 .hero-caption{
@@ -247,6 +248,40 @@ strong{ color:var(--p-purple); }
 .press-strip{ display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; padding:34px 0; }
 .press-strip img{ height:30px; width:auto; filter:grayscale(1); opacity:.85; transition:opacity .2s; }
 .press-strip img:hover{ opacity:1; }
+
+/* ---------- "Featured in" scrolling marquee ---------- */
+.featured-in{ background:#fff; padding:30px 0; }
+.marquee{
+  overflow:hidden; width:100%;
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+          mask-image:linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee-track{
+  display:inline-flex; flex-wrap:nowrap; white-space:nowrap;
+  will-change:transform; animation:marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track{ animation-play-state:paused; }
+.marquee-group{ display:inline-flex; align-items:center; }
+.marquee-item{
+  display:inline-flex; align-items:center;
+  font-family:'Bebas Neue', sans-serif; color:var(--p-purple);
+  font-size:1.55rem; letter-spacing:.09em; padding:0 24px; line-height:1;
+}
+.marquee-item::after{
+  content:"✦"; color:var(--p-gold); font-size:.62em; margin-left:24px; opacity:.75;
+}
+.marquee-lead{
+  font-family:'Playfair Display', Georgia, serif; font-style:italic;
+  color:var(--p-gold); font-size:1.2rem; letter-spacing:.02em; text-transform:none;
+}
+@keyframes marquee{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media (prefers-reduced-motion:reduce){
+  .marquee-track{ animation:none; }
+  .marquee{ overflow-x:auto; }
+}
 
 /* ---------- imagery ---------- */
 .portrait{ border-radius:3px; box-shadow:var(--p-shadow); }
