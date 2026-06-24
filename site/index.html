@@ -34,6 +34,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- thin scroll-progress bar (JS-driven; harmless without JS) -->
+<div class="scroll-progress" aria-hidden="true"></div>
 
 <!-- ===== THE QUANTUM FIELD ENTRANCE ===== -->
 <div id="entrance">
@@ -56,7 +58,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="brand" href="index.html"><img class="brand-mark" src="images/logo-bird.png" alt="">VIVEKA <span>VON ROSEN</span></a>
     <button class="nav-toggle" aria-label="Menu">☰</button>
     <nav class="nav">
-      <a href="work-with-me.html">Work With Me</a>
+      <a class="work-flash" href="work-with-me.html">Work With Me</a>
       <a href="about.html">About</a>
       <a href="speaking.html">Speaking</a>
       <a href="events.html">Events</a>
@@ -67,21 +69,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </header>
 
 <!-- ===== HERO ===== -->
-<section class="hero hero--purple">
-  <div class="wrap hero-grid hero-grid--media-left">
-    <div class="hero-figure">
-      <img class="hero-cutout" src="images/viv-hero-cutout.png" alt="Viveka von Rosen">
-      <div class="hero-caption">
-        <span class="hero-caption-name">Viveka von Rosen</span>
-        <span class="hero-caption-role">Bestselling Author · Speaker · Coach · Change-Agent</span>
-      </div>
-    </div>
+<section class="hero hero--purple hero--split" role="img" aria-label="Viveka von Rosen, arms open, looking up and laughing against a purple wall">
+  <div class="wrap">
     <div class="hero-copy">
-      <h1>Turn Your Wisdom<br>Into Traction</h1>
-      <p class="lead">I work with women founders building authority businesses they're passionate about, using AI and LinkedIn. You have twenty-plus years of real expertise — the work now is making sure the world can actually find it.</p>
+      <h1><span class="hl-line">Turn Your Wisdom</span><span class="hl-line">Into <span class="swash">Traction<svg class="swash-line" viewBox="0 0 300 26" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M6 18 C 96 13, 206 13, 294 9"/></svg></span></span></h1>
+      <p class="lead">You've spent twenty-plus years building real wisdom. Expert founders and execs come to me to find their own voice — and bring it, and that wisdom, into the world using tech.</p>
       <p class="hero-cta">
-        <a class="btn btn--light" href="contact.html">Take the First Step</a>
-        <a class="btn btn--ghost-light" href="work-with-me.html">See the Ways to Work Together</a>
+        <a class="btn btn--gold" href="contact.html">Take the First Step</a>
       </p>
     </div>
   </div>
@@ -159,7 +153,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>A community for women building visibility and business traction — trainings, Integration Labs, prompt libraries, tools, and women who get it.</p>
       <a class="btn" href="work-with-me.html#wtic">Join the Collaborative</a>
     </div>
-    <div class="card">
+    <div class="card card--featured">
       <span class="rung-num">02</span>
       <span class="rung-label">Rung Two — Strategy</span>
       <h3>Visibility Infrastructure OS</h3>
@@ -290,5 +284,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script src="js/quantum.js"></script>
 <script src="js/main.js"></script>
+<script>
+/* Draw the gold headline swashes once the hero is actually visible
+   (immediately if the entrance has already handed off, otherwise when it does). */
+(function () {
+  function reveal() {
+    document.querySelectorAll('.swash').forEach(function (s) { s.classList.add('drawn'); });
+    var wf = document.querySelector('.work-flash');
+    if (wf) wf.classList.add('flash');
+  }
+  function revealed() { return !document.body.classList.contains('entrance-active'); }
+  if (revealed()) {
+    setTimeout(reveal, 250);
+  } else {
+    var mo = new MutationObserver(function () {
+      if (revealed()) { mo.disconnect(); setTimeout(reveal, 300); }
+    });
+    mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  }
+})();
+</script>
 </body>
 </html>

@@ -148,15 +148,87 @@ strong{ color:var(--p-purple); }
 .hero-grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:center; }
 @media (max-width:880px){ .hero-grid{ grid-template-columns:1fr; } }
 
-/* ---------- home hero: purple variant (home page only) ---------- */
-.hero--purple{ background:var(--grad-purple); color:#fff; padding:84px 0 0; overflow:hidden; }
+/* ---------- home hero: editorial white variant (home page only) ---------- */
+.hero--purple{
+  position:relative; overflow:hidden; color:#fff;
+  min-height:clamp(560px, 82vh, 860px);
+  display:flex; flex-direction:column; justify-content:center;
+  padding:96px 0 60px;
+  background:
+    linear-gradient(100deg,
+      rgba(40,12,70,0) 0%, rgba(40,12,70,0) 40%,
+      rgba(45,16,78,.45) 58%, rgba(40,12,70,.85) 80%,
+      rgba(28,80,96,.82) 100%),
+    url('../images/viv-hero-bg.jpg') center / cover;
+}
+/* text lives in a right-hand column so it never sits over her face */
+.hero--split .wrap{ display:flex; justify-content:flex-end; width:100%; }
+.hero--split .hero-copy{ max-width:520px; text-align:left; margin-right:8px; }
+.hero--split h1{ font-size:clamp(2.3rem, 3.6vw, 3.7rem); }
+.hero--split h1 .hl-line{ display:block; white-space:nowrap; }
+.hero--split .lead{ margin-left:0; }
+.hero--split .hero-cta{ justify-content:flex-start; }
+@media (max-width:880px){
+  .hero--purple{
+    justify-content:flex-end;
+    background:
+      linear-gradient(to bottom, rgba(40,12,70,0) 0%, rgba(40,12,70,.34) 46%, rgba(40,12,70,.92) 100%),
+      url('../images/viv-hero-bg.jpg') 28% top / cover;
+  }
+  .hero--split .wrap{ justify-content:center; }
+  .hero--split .hero-copy{ max-width:none; text-align:center; }
+  .hero--split .hero-cta{ justify-content:center; }
+}
 /* the hero runs wider than the rest of the page, like the Dreamboard banner */
 .hero--purple .wrap{ max-width:1280px; }
-.hero--purple h1{
-  color:#fff; font-size:clamp(2.7rem, 4.4vw, 4.3rem); line-height:1.02;
-  letter-spacing:.035em; margin-bottom:22px;
+/* keep content above the corner scrollwork */
+.hero--purple > .wrap{ position:relative; z-index:2; }
+/* gold scrollwork settling into the lower corners, echoing the dark sections */
+.hero--purple::before,
+.hero--purple::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    url('../images/scroll-corner-l.png') left bottom / clamp(150px,15vw,230px) no-repeat,
+    url('../images/scroll-corner-r.png') right bottom / clamp(150px,15vw,230px) no-repeat;
+  opacity:.6;
 }
-.hero--purple .lead{ color:#fff; font-size:1.18rem; max-width:30em; margin-bottom:30px; }
+/* mirror the same corners up to the top, framing all four corners */
+.hero--purple::after{ transform:scaleY(-1); }
+.hero--purple h1{
+  color:#fff; font-size:clamp(3.4rem, 6.4vw, 6.2rem); line-height:.96;
+  letter-spacing:.02em; margin-bottom:24px;
+  text-shadow:0 2px 26px rgba(20,6,38,.45);
+}
+.hero--purple .lead{
+  color:#fff; font-size:1.2rem; max-width:34em; margin-bottom:30px;
+  text-shadow:0 1px 14px rgba(20,6,38,.4);
+}
+
+/* centered, balanced hero composition */
+.hero--centered .wrap{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+.hero--centered .hero-copy{ align-self:center; max-width:900px; padding:8px 0 30px; }
+.hero--centered .lead{ margin-left:auto; margin-right:auto; max-width:34em; }
+.hero--centered .hero-cta{ justify-content:center; }
+.hero--centered .hero-figure{ align-self:center; width:100%; }
+.hero--purple.hero--centered .hero-cutout{ max-width:560px; }
+
+/* hand-drawn gold underline swash under key headline words */
+.swash{ position:relative; display:inline-block; }
+.swash .swash-line{
+  position:absolute; left:-1%; bottom:-.16em; width:102%; height:.38em;
+  overflow:visible; pointer-events:none;
+}
+.swash .swash-line path{
+  fill:none; stroke:var(--p-gold); stroke-width:6;
+  stroke-linecap:round; vector-effect:non-scaling-stroke;
+  stroke-dasharray:100; stroke-dashoffset:100;
+}
+.swash.drawn .swash-line path{ animation:swashdraw 1s ease forwards; }
+@keyframes swashdraw{ to{ stroke-dashoffset:0; } }
+@media (prefers-reduced-motion:reduce){
+  .swash .swash-line path{ stroke-dashoffset:0; }
+  .swash.drawn .swash-line path{ animation:none; }
+}
 /* photo on the left, copy on the right; photo anchored to the bottom edge */
 .hero-grid--media-left{ grid-template-columns:1fr 1.05fr; align-items:end; gap:0 56px; }
 /* headline/copy vertically centered to balance against the photo */
@@ -167,7 +239,11 @@ strong{ color:var(--p-purple); }
 }
 .hero--purple .hero-cutout{
   position:relative; z-index:1; width:100%; max-width:700px; margin-bottom:0;
-  filter:drop-shadow(0 26px 40px rgba(0,0,0,.38));
+  /* soft, band-tinted shadow grounds her instead of outlining a sticker */
+  filter:drop-shadow(0 18px 34px rgba(30,8,56,.32));
+  /* fade the hard bottom cut so she emerges from the purple band */
+  -webkit-mask-image:linear-gradient(to bottom, #000 68%, rgba(0,0,0,.45) 86%, transparent 100%);
+          mask-image:linear-gradient(to bottom, #000 68%, rgba(0,0,0,.45) 86%, transparent 100%);
 }
 .hero-figure{ position:relative; display:flex; justify-content:center; align-self:end; }
 .hero--purple .hero-figure .hero-cutout{ display:block; vertical-align:bottom; }
@@ -177,11 +253,11 @@ strong{ color:var(--p-purple); }
   left:50%; top:50%; transform:translate(-50%,-50%);
   width:100%; aspect-ratio:1/1; border-radius:50%;
   background:radial-gradient(circle,
-    rgba(247,241,253,.88) 0%,
-    rgba(214,184,244,.55) 30%,
-    rgba(156,106,204,.24) 54%,
+    rgba(236,226,250,.52) 0%,
+    rgba(198,166,232,.32) 34%,
+    rgba(150,100,200,.16) 56%,
     rgba(123,59,173,0) 74%);
-  filter:blur(10px);
+  filter:blur(18px);
 }
 /* name + titles overlay the lower portion of the photo */
 .hero-caption{
@@ -209,6 +285,16 @@ strong{ color:var(--p-purple); }
 .btn--ghost-light:hover{ background:rgba(255,255,255,.12) !important; color:#fff !important; border-color:#fff; }
 /* let the two hero buttons wrap and breathe */
 .hero-cta{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+
+/* white hero: drop the lavender spotlight, ground her with a soft neutral shadow */
+.hero--purple .hero-figure::before{ display:none; }
+.hero--purple .hero-cutout{ filter:drop-shadow(0 16px 30px rgba(60,40,90,.20)); }
+/* soft scrim keeps the white name caption legible over both her body and white */
+.hero--purple .hero-caption{ bottom:9%; }
+.hero--purple .hero-caption::before{
+  content:""; position:absolute; z-index:-1; inset:-14% -8%;
+  background:radial-gradient(ellipse at center, rgba(45,15,75,.50), rgba(45,15,75,0) 72%);
+}
 
 /* ---------- cards ---------- */
 .card{
@@ -529,3 +615,72 @@ body.entrance-active{ overflow:hidden; }
 .checklist{ list-style:none; margin:24px 0; }
 .checklist li{ padding-left:32px; position:relative; margin-bottom:12px; color:var(--p-slate); }
 .checklist li::before{ content:"—"; position:absolute; left:0; color:var(--p-gold); font-weight:700; }
+
+/* ============================================================
+   Tasteful motion layer — transforms/opacity only, reduced-motion safe
+   ============================================================ */
+
+/* thin scroll-progress bar pinned to the very top */
+.scroll-progress{
+  position:fixed; top:0; left:0; width:100%; height:3px; z-index:200;
+  transform:scaleX(0); transform-origin:0 50%;
+  background:linear-gradient(90deg, var(--p-gold), var(--p-purple-light));
+  pointer-events:none;
+}
+
+/* subtle drifting aura behind the hero copy (sits under the content) */
+.hero-aura{
+  position:absolute; z-index:0; top:-12%; left:50%; width:min(82%,940px);
+  aspect-ratio:1; pointer-events:none; transform:translate(-50%,0);
+  background:radial-gradient(circle, rgba(123,59,173,.07), rgba(223,178,74,.05) 46%, transparent 70%);
+  animation:heroDrift 26s ease-in-out infinite;
+}
+@keyframes heroDrift{
+  0%,100%{ transform:translate(-54%,-2%); }
+  50%{ transform:translate(-46%,3%); }
+}
+
+/* gentle pulse + shine on the corner scrollwork (opacity only keeps the flip intact) */
+.hero--purple::before,
+.hero--purple::after{ animation:scrollPulse 6.5s ease-in-out infinite; }
+@keyframes scrollPulse{ 0%,100%{ opacity:.46; } 50%{ opacity:.72; } }
+
+/* one-time gold flash on the Work With Me nav link, fired when the page reveals */
+.work-flash{ position:relative; }
+.work-flash::after{
+  content:""; position:absolute; inset:-5px -10px; z-index:-1;
+  border-radius:4px; background:var(--p-gold); opacity:0;
+}
+.work-flash.flash::after{ animation:goldFlash 2.2s ease-out 1; }
+@keyframes goldFlash{ 0%{ opacity:0; } 18%{ opacity:.5; } 100%{ opacity:0; } }
+
+/* the featured pathway tier: distinct, with a slow breathe (pauses on hover for the lift) */
+.card--featured{
+  border-color:rgba(223,178,74,.55);
+  box-shadow:0 26px 64px -26px rgba(87,31,129,.45), 0 0 0 1px rgba(223,178,74,.45);
+  animation:tierBreathe 5.5s ease-in-out infinite;
+}
+.card--featured:hover{ animation:none; }
+@keyframes tierBreathe{
+  0%,100%{ transform:translateY(0) scale(1); }
+  50%{ transform:translateY(-3px) scale(1.014); }
+}
+
+/* sparkle/shine sweep across any button on hover */
+.btn{ position:relative; overflow:hidden; }
+.btn::after{
+  content:""; position:absolute; top:0; left:0; width:55%; height:100%; pointer-events:none;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent);
+  transform:translateX(-220%) skewX(-18deg);
+}
+.btn:hover::after{ transform:translateX(340%) skewX(-18deg); transition:transform .65s ease; }
+
+@media (prefers-reduced-motion: reduce){
+  .hero-aura,
+  .hero--purple::before,
+  .hero--purple::after,
+  .card--featured{ animation:none; }
+  .card--featured{ transform:none; }
+  .work-flash.flash::after{ animation:none; }
+  .btn::after{ display:none; }
+}
