@@ -168,6 +168,30 @@ strong{ color:var(--p-purple); }
 .hero--split h1 .hl-line{ display:block; white-space:nowrap; }
 .hero--split .lead{ margin-left:0; }
 .hero--split .hero-cta{ justify-content:flex-start; }
+
+/* ---------- work-with-me hero: photo background (scoped to .hero--photo) ---------- */
+.hero--photo{
+  position:relative; overflow:hidden; color:#fff;
+  min-height:clamp(440px, 64vh, 660px);
+  display:flex; align-items:center;
+  padding:96px 0;
+  background:
+    linear-gradient(180deg, rgba(40,12,70,.60) 0%, rgba(40,12,70,.50) 42%, rgba(40,12,70,.76) 100%),
+    url('../images/viv-barb-bg.jpg') center / cover;
+}
+.hero--photo > .wrap{ position:relative; z-index:2; }
+.hero--photo h1{ color:#fff; text-shadow:0 2px 22px rgba(20,6,38,.5); }
+.hero--photo .lead{ color:#fff; text-shadow:0 1px 14px rgba(20,6,38,.45); }
+/* gold scrollwork in all four corners, like the home hero */
+.hero--photo::before,
+.hero--photo::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    url('../images/scroll-corner-l.png') left bottom / clamp(150px,15vw,230px) no-repeat,
+    url('../images/scroll-corner-r.png') right bottom / clamp(150px,15vw,230px) no-repeat;
+  opacity:.6;
+}
+.hero--photo::after{ transform:scaleY(-1); }
 @media (max-width:880px){
   .hero--purple{
     justify-content:flex-end;
