@@ -340,6 +340,7 @@ strong{ color:var(--p-purple); }
 .btn--ghost-light:hover{ background:rgba(255,255,255,.12) !important; color:#fff !important; border-color:#fff; }
 /* let the two hero buttons wrap and breathe */
 .hero-cta{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+.center .hero-cta{ justify-content:center; }
 
 /* white hero: drop the lavender spotlight, ground her with a soft neutral shadow */
 .hero--purple .hero-figure::before{ display:none; }
