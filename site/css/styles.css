@@ -214,6 +214,11 @@ strong{ color:var(--p-purple); }
     linear-gradient(180deg, rgba(40,12,70,.66) 0%, rgba(40,12,70,.56) 42%, rgba(40,12,70,.80) 100%),
     url('../images/viv-blog-bg.jpg') center / cover;
 }
+.hero--wtic{
+  background:
+    linear-gradient(180deg, rgba(40,12,70,.66) 0%, rgba(40,12,70,.54) 42%, rgba(40,12,70,.80) 100%),
+    url('../images/viv-events-bg.jpg') center / cover;
+}
 @media (max-width:880px){
   .hero--about{
     background:
