@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     const currency = (session.currency || 'usd').toUpperCase();
 
     try {
-      await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: process.env.FROM_EMAIL,   // e.g. 'WTIC <notify@yourdomain.com>'
         to: process.env.NOTIFY_EMAIL,   // your inbox
         subject: `New WTIC annual — invite ${name}`,
@@ -69,10 +69,17 @@ export default async function handler(req, res) {
             <p style="margin:18px 0 0;color:#4A4356;font-size:14px">Members tab &rarr; invite by email &rarr; paste the address above. They click JOIN NOW and they're in.</p>
           </div>`,
       });
+      // Resend (v4) does NOT throw on a rejected send — it returns { data, error }.
+      // Surface both so failures are loud in the Vercel logs instead of silent.
+      if (error) {
+        console.error('Resend rejected the email:', JSON.stringify(error));
+      } else {
+        console.log('WTIC notify email sent OK. id=' + (data && data.id) + ' from=' + process.env.FROM_EMAIL + ' to=' + process.env.NOTIFY_EMAIL);
+      }
     } catch (err) {
-      // Log it but still return 200 so Stripe doesn't retry endlessly.
-      // Your Stripe dashboard email (see README, step 7) is the backstop if this ever fails.
-      console.error('Resend send failed:', err);
+      // Network/throw path. Still return 200 so Stripe doesn't retry endlessly.
+      // Your Stripe "successful payments" notification is the backstop if this ever fails.
+      console.error('Resend threw:', err);
     }
   }
 
